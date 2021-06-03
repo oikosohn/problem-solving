@@ -1,0 +1,70 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'interQuartile' function below.
+#
+# The function accepts following parameters:
+#  1. INTEGER_ARRAY values
+#  2. INTEGER_ARRAY freqs
+#
+
+def interQuartile(values, freqs):
+    arr = []
+    res = 0
+    # values = [10, 40, 30, 50, 20]
+    # freqs = [1, 2, 3, 4, 5]
+    for i in range(len(values)):
+        arr += [values[i]]*freqs[i]       
+    
+    n = len(arr)
+    
+    for i in range(n-1):
+        min_idx = i
+        for j in range(i+1,n):
+            if arr[j] < arr[min_idx] :
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    # print(arr)
+    mid = n//2
+    lmid = mid//2
+    umid = mid+mid//2  
+    a,b,c = 0,0,0
+    if n%2==0 : # even
+        if mid%2 == 0:
+            a = (arr[lmid-1]+arr[lmid])/2   
+            b = (arr[mid-1]+arr[mid])/2
+            c = (arr[umid-1]+arr[umid])/2
+        else:
+            a = arr[lmid]    
+            b = (arr[mid-1]+arr[mid])/2
+            c = arr[umid]
+    else: # odd
+        if mid%2 == 0:
+            a = (arr[lmid-1]+arr[lmid])/2
+            b = arr[mid]
+            c = (arr[umid]+arr[umid+1])/2
+        else:
+            a = (arr[lmid])
+            b = arr[mid]
+            c = (arr[umid+1])
+    
+    # print(arr)
+    # print(a,b,c)
+    res = float(c - a)
+    print(round(res,1))
+
+    
+if __name__ == '__main__':
+    n = int(input().strip())
+
+    val = list(map(int, input().rstrip().split()))
+
+    freq = list(map(int, input().rstrip().split()))
+
+    interQuartile(val, freq)
